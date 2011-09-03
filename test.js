@@ -1,5 +1,5 @@
 
-var Iterator = require("./iterator");
+var Iterator = require("./iterator").Iterator;
 
 Iterator.range(10).forEach(function (n) {
     console.log(n);

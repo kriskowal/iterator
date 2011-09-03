@@ -1,0 +1,25 @@
+{
+    "name": "iterator",
+    "version": "0.0.0",
+    "description": "JavaScript iterator tools.",
+    "homepage": "http://github.com/kriskowal/iterator/",
+    "author": "Kris Kowal <kris.kowal@cixar.com> (http://github.com/kriskowal/)",
+    "contributors": [
+        "Kris Kowal <kris.kowal@cixar.com> (http://github.com/kriskowal/)"
+    ],
+    "bugs": {
+        "mail": "kris.kowal@cixar.com",
+        "web": "http://github.com/kriskowal/iterator/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://github.com/kriskowal/iterator/raw/master/LICENSE"
+        }
+    ],
+    "main": "iterator.js",
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/kriskowal/iterator.git"
+    }
+}

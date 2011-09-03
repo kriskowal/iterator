@@ -285,6 +285,7 @@ Iterator.iterate = function (array) {
 Iterator.cycle = function (cycle, times) {
     if (arguments.length < 2)
         times = Infinity;
+    //cycle = Iterator(cycle).toArray();
     var next = function () {
         throw StopIteration;
     };
@@ -383,18 +384,18 @@ Iterator.range = function (start, stop, step) {
     });
 };
 
-Iterator.count = function (start) {
-    return Iterator.range(start, Infinity);
+Iterator.count = function (start, step) {
+    step = step || 1;
+    return Iterator.range(start, Infinity, step);
 };
 
 Iterator.repeat = function (value, times) {
+    if (arguments.length < 2)
+        times = Infinity;
+    times = +times;
     return new Iterator.range(times).map(function () {
         return value;
     });
-};
-
-Iterator.enumerate = function (values, start) {
-    return Iterator.count(count).zip(values);
 };
 
 // shim isStopIteration
@@ -410,7 +411,10 @@ if (typeof StopIteration == "undefined") {
     global.StopIteration = {};
     Object.prototype.toString = (function (toString) {
         return function () {
-            if (this === global.StopIteration)
+            if (
+                this === global.StopIteration ||
+                this instanceof global.ReturnValue
+            )
                 return "[object StopIteration]";
             else
                 return toString.call(this, arguments);
@@ -421,17 +425,20 @@ if (typeof StopIteration == "undefined") {
 // shim ReturnValue
 if (typeof ReturnValue == "undefined") {
     global.ReturnValue = function (value) {
-        return Object.create(global.StopIteration, {
-            "value": {
-                "value": value,
-                "enumerable": true
-            }
-        });
+        if (!(this instanceof global.ReturnValue))
+            return new global.ReturnValue(value);
+        this.value = value;
     };
 }
 
-if (typeof exports !== "undefined")
+function Generator(generator) {
+    return function () {
+        return new Iterator(generator.apply(this, arguments));
+    };
+}
+
+if (typeof exports !== "undefined") {
     exports.Iterator = Iterator;
-if (typeof module !== "undefined")
-    module.exports = Iterator;
+    exports.Generator = Generator;
+}
 
